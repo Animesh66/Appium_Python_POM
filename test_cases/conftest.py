@@ -13,10 +13,11 @@ def pytest_runtest_makereport(item, call):
     return rep
 
 
-@pytest.fixture(params=["device1","device2"],scope="function")
+@pytest.fixture(params=["device1", "device2"], scope="function")
 def appium_driver(request):
-    # appium_service = AppiumService()
-    # appium_service.start()
+    appium_service = AppiumService()
+    appium_service.start()
+    print(appium_service.is_running)
     if request.param == "device1":
         desired_caps = dict(
 
@@ -43,7 +44,8 @@ def appium_driver(request):
     driver.implicitly_wait(10)
     yield driver
     driver.quit()
-    # appium_service.stop()
+    appium_service.stop()
+    print(appium_service.is_running)
 
 
 @pytest.fixture()
